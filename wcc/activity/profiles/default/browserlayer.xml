@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<layers>
+    <layer name="wcc.activity"
+        interface="wcc.activity.interfaces.IProductSpecific" />
+</layers>
