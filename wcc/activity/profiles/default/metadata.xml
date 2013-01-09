@@ -3,5 +3,7 @@
     <version>1</version>
     <dependencies>
         <dependency>profile-plone.app.dexterity:default</dependency>
+        <dependency>profile-collective.miscbehaviors:default</dependency>
+        <dependency>profile-wcc.common:default</dependency>
     </dependencies>
 </metadata>

@@ -29,6 +29,8 @@ setup(name='wcc.activity',
           'plone.app.dexterity',
           'plone.namedfile [blobs]',
           'collective.grok',
+          'collective.miscbehaviors',
+          'wcc.common',
           # -*- Extra requirements: -*-
       ],
       extras_require={
