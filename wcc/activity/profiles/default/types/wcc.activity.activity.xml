@@ -24,6 +24,7 @@
      <element value="collective.miscbehaviors.behavior.bodytext.IBodyText"/>
      <element value="wcc.common.behavior.location.ILocationTags"/>
      <element value="plone.app.relationfield.behavior.IRelatedItems"/>
+     <element value="plone.multilingualbehavior.interfaces.IDexterityTranslatable"/>
    </property>
 
   <!-- View information -->
