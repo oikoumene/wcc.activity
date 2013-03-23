@@ -18,7 +18,7 @@
 
     <!-- -*- extra stuff goes here -*- -->
 
-    <class class="Products.ATContentTypes.content.newsitem.IATNewsItem">
+    <class class="Products.ATContentTypes.content.newsitem.ATNewsItem">
        <implements interface="wcc.activity.interfaces.IActivityTagEnabled"/>
    </class>
 
