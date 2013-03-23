@@ -10,3 +10,9 @@ class Index(dexterity.DisplayForm):
     grok.template('activity_view')
     grok.name('view')
 
+
+    def related_news(self):
+        return [{
+            'title':'hello world',
+            'description': 'lorem ipsum dolor sit amet',
+        }]
