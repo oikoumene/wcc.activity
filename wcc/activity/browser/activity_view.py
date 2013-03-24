@@ -13,4 +13,4 @@ class Index(dexterity.DisplayForm):
 
     def related_news(self):
         refs = IReferenceable(self.context)
-        return refs.getBRefs()[:5]
+        return refs.getBRefs()[:3]
