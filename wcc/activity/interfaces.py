@@ -5,3 +5,11 @@ class IProductSpecific(Interface):
 
 class IActivityTagEnabled(Interface):
     pass
+
+class IActivityRelation(Interface):
+
+    def related_news():
+        pass
+
+    def related_documents():
+        pass

@@ -4,6 +4,7 @@ from wcc.activity.content.activity import IActivity
 from Products.Archetypes.interfaces.referenceable import IReferenceable
 from Products.ATContentTypes.interfaces.news import IATNewsItem
 from Products.CMFPlone.PloneBatch import Batch
+from wcc.activity.interfaces import IActivityRelation
 
 grok.templatedir('templates')
 
@@ -14,8 +15,8 @@ class NewsListingView(dexterity.DisplayForm):
     grok.name('activity_news')
 
     def update(self):
-        refs = IReferenceable(self.context)
-        self.items = [n for n in refs.getBRefs() if IATNewsItem.providedBy(n)]
+        rels = IActivityRelation(self.context)
+        self.items = rels.related_news()
 
     def batch(self):
         b_start = self.request.get('b_start', 0)

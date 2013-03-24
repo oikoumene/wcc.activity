@@ -31,7 +31,8 @@ setup(name='wcc.activity',
           'collective.grok',
           'collective.miscbehaviors',
           'wcc.common',
-          'plone.app.referenceablebehavior'
+          'plone.app.referenceablebehavior',
+          'wcc.document',
           # -*- Extra requirements: -*-
       ],
       extras_require={
