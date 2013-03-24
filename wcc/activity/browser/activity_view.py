@@ -11,6 +11,11 @@ class Index(dexterity.DisplayForm):
     grok.template('activity_view')
     grok.name('view')
 
+    def update(self):
+        self.rels = IActivityRelation(self.context)
+
     def related_news(self):
-        rels = IActivityRelation(self.context)
-        return rels.related_news()[:3]
+        return self.rels.related_news()[:3]
+
+    def related_documents(self):
+        return self.rels.related_documents()[:3]

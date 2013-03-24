@@ -50,6 +50,25 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div id="wcc-activity-relateddocs" class="cell width-1:2 position-0">
+            <h2>Related Documents</h2>
+            <div tal:repeat="item view/related_documents">
+                <h4>
+                    <a tal:attributes="href item/absolute_url"
+                        tal:content="item/title"></a>
+                </h4>
+                <p tal:content="item/Description"></p>
+            </div>
+            <div class="link_more">
+                <a tal:attributes="href string:${context/absolute_url}/activity_documents">
+                    More documents on this topic
+                </a>
+            </div>
+        </div>
+        <div id="wcc-activity-relatedpublications" class="cell width-1:2 position-1:2">
+        </div>
+    </div>
   </metal:content-core>
 </metal:main>
 
