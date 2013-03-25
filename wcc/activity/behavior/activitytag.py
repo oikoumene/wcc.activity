@@ -13,6 +13,7 @@ from wcc.activity import MessageFactory as _
 from z3c.relationfield.schema import RelationList
 from plone.formwidget.contenttree import ObjPathSourceBinder
 from wcc.activity.content.activity import IActivity
+from Acquisition import aq_base
 
 class IActivityTag(form.Schema):
     """
@@ -39,7 +40,25 @@ class ActivityTag(object):
     implements(IActivityTag)
     adapts(IDexterityContent)
 
-    def __init__(self,context):
-        self.context = context
+    _delegated_attributes = [
+        'related_activities',
+    ]
 
-    # -*- Your behavior property setters & getters here ... -*-
+    def __init__(self, context):
+        self.context = aq_base(context)
+
+    def __getattr__(self, key):
+        if key in self._delegated_attributes:
+            return getattr(self.context, key)
+        raise AttributeError(key)
+
+    def __setattr__(self, key, value):
+        if key in self._delegated_attributes:
+            setattr(self.context, key, value)
+        self.__dict__[key] = value
+
+    def __delattr__(self, key):
+        if key in self._delegated_attributes:
+            delattr(self.context, key)
+        del self.__dict__[key]
+

@@ -5,6 +5,7 @@ from Products.Archetypes.interfaces.referenceable import IReferenceable
 from wcc.activity.backref import back_references
 from Products.ATContentTypes.interfaces.news import IATNewsItem
 from Products.ATContentTypes.interfaces.file import IATFile
+from Products.ATContentTypes.interfaces.folder import IATFolder
 from wcc.document.content.document import IDocument
 
 class ActivityRelationAdapter(grok.Adapter):
@@ -25,8 +26,12 @@ class ActivityRelationAdapter(grok.Adapter):
         return [i for i in self.refs if self._is_document(i)]
 
     def _is_document(self, item):
+        if IATNewsItem.providedBy(item):
+            return False
         if IDocument.providedBy(item):
             return True
         if IATFile.providedBy(item):
+            return True
+        if IATFolder.providedBy(item):
             return True
         return False
