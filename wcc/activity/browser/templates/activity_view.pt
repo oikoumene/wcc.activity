@@ -28,7 +28,7 @@
 
     <div tal:content="structure view/widgets/IBodyText.text/render"/>
     <div>
-        <div id="wcc-activity-relatednews">
+        <div id="wcc-activity-relatednews" tal:condition="view/related_news">
             <h2>Related News</h2>
             <div tal:repeat="item view/related_news" class="row wcc-activity-relatednews-item">
                 <div class="cell width-1:5 position-0 image-cell" 
@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" tal:condition="view/related_documents">
         <div id="wcc-activity-relateddocs" class="cell width-1:2 position-0">
             <h2>Related Documents</h2>
             <div tal:repeat="item view/related_documents">
