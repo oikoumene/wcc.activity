@@ -7,6 +7,9 @@ from Products.ATContentTypes.interfaces.news import IATNewsItem
 from Products.ATContentTypes.interfaces.file import IATFile
 from Products.ATContentTypes.interfaces.folder import IATFolder
 from wcc.document.content.document import IDocument
+from plone.multilingual.interfaces import ITranslatable
+from plone.multilingual.interfaces import ILanguage
+from zope.component import queryAdapter
 
 class ActivityRelationAdapter(grok.Adapter):
     grok.implements(IActivityRelation)
@@ -20,7 +23,14 @@ class ActivityRelationAdapter(grok.Adapter):
                 key=lambda x:x.Date(), reverse=True)
 
     def related_news(self):
-        return [i for i in self.refs if IATNewsItem.providedBy(i)]
+        result = []
+        curr_lang = queryAdapter(self.context, ILanguage).get_language()
+        for i in self.refs:
+            if IATNewsItem.providedBy(i):
+                item_lang = queryAdapter(i, ILanguage).get_language()
+                if item_lang == curr_lang:
+                    result.append(i)
+        return result
 
     def related_documents(self):
         return [i for i in self.refs if self._is_document(i)]

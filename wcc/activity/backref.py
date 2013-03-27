@@ -17,20 +17,29 @@ from plone.multilingual.interfaces import ITranslatable
 
 def back_references(source_object, attribute_name):
     """ Return back references from source object on specified attribute_name """
-    catalog = getUtility(ICatalog)
-    intids = getUtility(IIntIds)
     language_tool = getToolByName(source_object, 'portal_languages')
     default_language = language_tool.getDefaultLanguage()
 
-    result = []
+    default_rels = []
     # if this object is translatable, we should get the back relationship from the
     # default language of this object
-    if IDexterityTranslatable.providedBy(source_object):
+    if ITranslatable.providedBy(source_object):
         trans_manager = ITranslationManager(aq_inner(source_object))
-        trans_obj = trans_manager.get_translation(default_language)
-        if trans_obj:
-            source_object = trans_obj
+        default_lang_obj = trans_manager.get_translation(default_language)
+        if default_lang_obj:
+            default_rels = _back_references(default_lang_obj, attribute_name, source_object)
 
+    return list(set(default_rels + _back_references(source_object, attribute_name)))
+
+def _back_references(source_object, attribute_name, translation=None):
+    catalog = getUtility(ICatalog)
+    intids = getUtility(IIntIds)
+
+    lang = queryAdapter(source_object, ILanguage).get_language()
+    if translation:
+        lang = queryAdapter(translation, ILanguage).get_language()
+
+    result = []
     for rel in catalog.findRelations({
             'to_id': intids.getId(aq_inner(source_object)),
             'from_attribute':attribute_name
@@ -38,7 +47,6 @@ def back_references(source_object, attribute_name):
         obj = intids.queryObject(rel.from_id)
         if obj is not None and checkPermission('zope2.View', obj):
             if ITranslatable.providedBy(obj):
-                lang = queryAdapter(obj, ILanguage).get_language()
                 trans_manager = ITranslationManager(aq_inner(obj))
                 trans_obj = trans_manager.get_translation(lang)
                 if trans_obj:
@@ -48,6 +56,8 @@ def back_references(source_object, attribute_name):
             result.append(obj)
     return result
 
+
+
 def at_back_references(source_object, relationship):
     language_tool = getToolByName(source_object, 'portal_languages')
     default_language = language_tool.getDefaultLanguage()
@@ -55,18 +65,26 @@ def at_back_references(source_object, relationship):
     # if this object is translatable, we should get the back relationship from the
     # default language of this object
 
-    if IArchetypesTranslatable.providedBy(source_object):
+    default_rels = []
+    if ITranslatable.providedBy(source_object):
         trans_manager = ITranslationManager(aq_inner(source_object))
-        trans_obj = trans_manager.get_translation(default_language)
-        if trans_obj:
-            source_object = trans_obj
+        default_lang_obj = trans_manager.get_translation(default_language)
+        if default_lang_obj:
+            default_rels = _at_back_references(default_lang_obj, relationship, source_object)
+
+    return list(set(default_rels + _at_back_references(source_object, relationship)))
+
+def _at_back_references(source_object, relationship, translation=None):
+
+    lang = queryAdapter(source_object, ILanguage).get_language()
+    if translation:
+        lang = queryAdapter(translation, ILanguage).get_language()
 
     refs = IReferenceable(source_object).getBRefs(relationship=relationship)
     
     result = []
     for obj in refs:
         if ITranslatable.providedBy(obj):
-            lang = queryAdapter(obj, ILanguage).get_language()
             trans_manager = ITranslationManager(aq_inner(obj))
             trans_obj = trans_manager.get_translation(lang)
             if trans_obj:
