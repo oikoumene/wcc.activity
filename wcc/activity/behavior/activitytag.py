@@ -14,12 +14,15 @@ from z3c.relationfield.schema import RelationList
 from plone.formwidget.contenttree import ObjPathSourceBinder
 from wcc.activity.content.activity import IActivity
 from Acquisition import aq_base
+from plone.multilingualbehavior.directives import languageindependent
+from wcc.activity.interfaces import IActivityTagEnabled
 
-class IActivityTag(form.Schema):
+class IActivityTag(form.Schema, IActivityTagEnabled):
     """
        Marker/Form interface for ActivityTag
     """
 
+    languageindependent('related_activities')
     related_activities = RelationList(
         title=_(u'Related Activities'),
         required=False,

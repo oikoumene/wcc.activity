@@ -31,6 +31,7 @@ class ActivityTag(grok.Adapter):
         ExtensionReferenceField('related_activities',
             multiValued=True,
             required=False,
+            languageIndependent=True,
             relationship='ActivityTag',
             allowed_types=('wcc.activity.activity',),
             widget=ReferenceBrowserWidget(

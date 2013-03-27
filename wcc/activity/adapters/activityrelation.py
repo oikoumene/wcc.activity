@@ -2,7 +2,7 @@ from five import grok
 from wcc.activity.content.activity import IActivity
 from wcc.activity.interfaces import IActivityRelation
 from Products.Archetypes.interfaces.referenceable import IReferenceable
-from wcc.activity.backref import back_references
+from wcc.activity.backref import back_references, at_back_references
 from Products.ATContentTypes.interfaces.news import IATNewsItem
 from Products.ATContentTypes.interfaces.file import IATFile
 from Products.ATContentTypes.interfaces.folder import IATFolder
@@ -14,7 +14,7 @@ class ActivityRelationAdapter(grok.Adapter):
 
     def __init__(self, context):
         self.context = context
-        self._atrefs = IReferenceable(context).getBRefs()
+        self._atrefs = at_back_references(context, 'ActivityTag')
         self._dexterityrefs = back_references(context, 'related_activities')
         self.refs = sorted(self._atrefs + self._dexterityrefs,
                 key=lambda x:x.Date(), reverse=True)

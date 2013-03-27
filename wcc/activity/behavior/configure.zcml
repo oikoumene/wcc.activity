@@ -12,6 +12,7 @@
         provides=".activitytag.IActivityTag"
         factory=".activitytag.ActivityTag"
         for="plone.dexterity.interfaces.IDexterityContent"
+        marker=".activitytag.IActivityTag"
         />
 
 
