@@ -10,6 +10,15 @@ from Acquisition import aq_base
 from Products.ATContentTypes.interfaces.news import IATNewsItem
 
 # -*- extra stuff goes here -*- 
+
+
+@gs.upgradestep(title=u'Upgrade wcc.activity to 1004',
+                description=u'Upgrade wcc.activity to 1004',
+                source='1003', destination='1004',
+                sortkey=1, profile='wcc.activity:default')
+def to1004(context):
+    setup = getToolByName(context, 'portal_setup')
+    setup.runAllImportStepsFromProfile('profile-wcc.activity.upgrades:to1004')
 _marker = []
 
 @gs.upgradestep(title=u'Upgrade wcc.activity to 1003',
