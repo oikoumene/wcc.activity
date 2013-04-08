@@ -14,6 +14,7 @@ from plone.multilingual.interfaces import ILanguage
 from Products.Archetypes.interfaces.referenceable import IReferenceable
 from archetypes.multilingual.interfaces import IArchetypesTranslatable
 from plone.multilingual.interfaces import ITranslatable
+from AccessControl import getSecurityManager
 
 def back_references(source_object, attribute_name):
     """ Return back references from source object on specified attribute_name """
@@ -39,6 +40,7 @@ def _back_references(source_object, attribute_name, translation=None):
     if translation:
         lang = queryAdapter(translation, ILanguage).get_language()
 
+    gsm = getSecurityManager()
     result = []
     for rel in catalog.findRelations({
             'to_id': intids.getId(aq_inner(source_object)),
@@ -53,7 +55,8 @@ def _back_references(source_object, attribute_name, translation=None):
                     result.append(trans_obj)
                     continue
 
-            result.append(obj)
+            if gsm.checkPermission('zope2.View', obj):
+                result.append(obj)
     return result
 
 
@@ -81,7 +84,7 @@ def _at_back_references(source_object, relationship, translation=None):
         lang = queryAdapter(translation, ILanguage).get_language()
 
     refs = IReferenceable(source_object).getBRefs(relationship=relationship)
-    
+    gsm = getSecurityManager()
     result = []
     for obj in refs:
         if ITranslatable.providedBy(obj):
@@ -90,6 +93,8 @@ def _at_back_references(source_object, relationship, translation=None):
             if trans_obj:
                 result.append(trans_obj)
                 continue
-        result.append(obj)
+
+        if gsm.checkPermission('zope2.View', obj):
+            result.append(obj)
 
     return result
