@@ -12,6 +12,27 @@ from Acquisition import aq_base
 # -*- extra stuff goes here -*- 
 
 
+@gs.upgradestep(title=u'Upgrade wcc.activity to 1006',
+                description=u'Upgrade wcc.activity to 1006',
+                source='1005', destination='1006',
+                sortkey=1, profile='wcc.activity:default')
+def to1006(context):
+    setup = getToolByName(context, 'portal_setup')
+    setup.runAllImportStepsFromProfile('profile-wcc.activity.upgrades:to1006')
+
+    catalog = getToolByName(context, 'portal_catalog')
+
+    for brain in catalog(portal_type='wcc.activity.activity', Language='all'):
+        obj = brain.getObject()
+        if getattr(aq_base(obj), 'image', None):
+            if not obj.image.data:
+                aq_base(obj).image = None
+        else:
+            aq_base(obj).image = None
+
+
+
+
 @gs.upgradestep(title=u'Upgrade wcc.activity to 1005',
                 description=u'Upgrade wcc.activity to 1005',
                 source='1004', destination='1005',
