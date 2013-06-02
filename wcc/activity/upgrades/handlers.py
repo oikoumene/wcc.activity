@@ -8,8 +8,27 @@ from zope.lifecycleevent import ObjectModifiedEvent
 from zope.event import notify
 from Acquisition import aq_base
 from Products.ATContentTypes.interfaces.news import IATNewsItem
-
+from Acquisition import aq_base
 # -*- extra stuff goes here -*- 
+
+
+@gs.upgradestep(title=u'Upgrade wcc.activity to 1005',
+                description=u'Upgrade wcc.activity to 1005',
+                source='1004', destination='1005',
+                sortkey=1, profile='wcc.activity:default')
+def to1005(context):
+    setup = getToolByName(context, 'portal_setup')
+    setup.runAllImportStepsFromProfile('profile-wcc.activity.upgrades:to1005')
+
+    catalog = getToolByName(context, 'portal_catalog')
+
+    for brain in catalog(portal_type='wcc.activity.activity'):
+        obj = brain.getObject()
+        if getattr(aq_base(obj), 'image', None):
+            if not obj.image.data:
+                aq_base(obj).image = None
+        else:
+            aq_base(obj).image = None
 
 
 @gs.upgradestep(title=u'Upgrade wcc.activity to 1004',
