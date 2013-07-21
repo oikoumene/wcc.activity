@@ -20,7 +20,6 @@ from plone.formwidget.contenttree import ObjPathSourceBinder
 
 from wcc.activity import MessageFactory as _
 
-
 # Interface class; used to define content-type schema.
 
 class IActivity(form.Schema, IImageScaleTraversable):
