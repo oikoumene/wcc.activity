@@ -6,6 +6,12 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="wcc.activity">
 
+      <metal:block fill-slot="head_slot">
+          <link rel="alternate" 
+              tal:attributes="href string:${context/absolute_url}/RSS"
+                     title="RSS 1.0" type="application/rss+xml" />
+      </metal:block>
+
       <metal:block fill-slot="style_slot">
         <style>
             .wcc-activity-relatednews-item {
