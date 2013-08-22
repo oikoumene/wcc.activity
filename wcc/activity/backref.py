@@ -15,6 +15,7 @@ from Products.Archetypes.interfaces.referenceable import IReferenceable
 from archetypes.multilingual.interfaces import IArchetypesTranslatable
 from plone.multilingual.interfaces import ITranslatable
 from AccessControl import getSecurityManager
+from AccessControl import Unauthorized
 
 def back_references(source_object, attribute_name):
     """ Return back references from source object on specified attribute_name """
@@ -89,7 +90,11 @@ def _at_back_references(source_object, relationship, translation=None):
     for obj in refs:
         if ITranslatable.providedBy(obj):
             trans_manager = ITranslationManager(aq_inner(obj))
-            trans_obj = trans_manager.get_translation(lang)
+            try: 
+                trans_obj = trans_manager.get_translation(lang)
+            except Unauthorized:
+                continue
+
             if trans_obj:
                 result.append(trans_obj)
                 continue
