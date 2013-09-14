@@ -51,7 +51,11 @@ def _back_references(source_object, attribute_name, translation=None):
         if obj is not None and checkPermission('zope2.View', obj):
             if ITranslatable.providedBy(obj):
                 trans_manager = ITranslationManager(aq_inner(obj))
-                trans_obj = trans_manager.get_translation(lang)
+                try:
+                    trans_obj = trans_manager.get_translation(lang)
+                except Unauthorized, e:
+                    continue
+
                 if trans_obj:
                     result.append(trans_obj)
                     continue
