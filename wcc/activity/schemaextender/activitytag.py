@@ -38,6 +38,7 @@ class ActivityTag(grok.Adapter):
                 label='Related Activities',
                 allow_browse=False,
                 show_results_without_query=True,
+                startup_directory='/'
                 )
         )
     ]
