@@ -34,6 +34,28 @@
 
     <div tal:content="structure view/widgets/IBodyText.text/render"/>
     <div>
+        <div id="wcc-activity-relatedevents" tal:condition="view/related_events">
+            <h2>Related Events</h2>
+            <div tal:repeat="item view/related_events" class="row wcc-activity-relatedevents-item">
+                <div class="cell width-1:5 position-0 image-cell" 
+                    tal:define="featureimages nocall:item/@@featureimages">
+                    <img tal:replace="structure python:featureimages.tag(scale='thumb')"/>
+                </div>
+                <div class="cell width-4:5 position-1:5">
+                    <h4>
+                        <a tal:attributes="href item/absolute_url"
+                            tal:content="item/title"></a>
+                    </h4>
+                    <p tal:content="item/Description"></p>
+                </div>
+            </div>
+            <div class="link_more">
+                <a tal:attributes="href string:${context/absolute_url}/activity_events">
+                    More events on this topic
+                </a>
+            </div>
+        </div>
+      
         <div id="wcc-activity-relatednews" tal:condition="view/related_news">
             <h2>Related News</h2>
             <div tal:repeat="item view/related_news" class="row wcc-activity-relatednews-item">
