@@ -10,6 +10,7 @@ from wcc.document.content.document import IDocument
 from plone.multilingual.interfaces import ITranslatable
 from plone.multilingual.interfaces import ILanguage
 from zope.component import queryAdapter
+from Products.ATContentTypes.interfaces.event import IATEvent
 
 class ActivityRelationAdapter(grok.Adapter):
     grok.implements(IActivityRelation)
@@ -27,6 +28,16 @@ class ActivityRelationAdapter(grok.Adapter):
         curr_lang = queryAdapter(self.context, ILanguage).get_language()
         for i in self.refs:
             if IATNewsItem.providedBy(i):
+                item_lang = queryAdapter(i, ILanguage).get_language()
+                if item_lang == curr_lang:
+                    result.append(i)
+        return result
+    
+    def related_events(self):
+        result = []
+        curr_lang = queryAdapter(self.context, ILanguage).get_language()
+        for i in self.refs:
+            if IATEvent.providedBy(i):
                 item_lang = queryAdapter(i, ILanguage).get_language()
                 if item_lang == curr_lang:
                     result.append(i)
