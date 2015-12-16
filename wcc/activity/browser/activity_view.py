@@ -16,6 +16,9 @@ class Index(dexterity.DisplayForm):
 
     def related_news(self):
         return self.rels.related_news()[:3]
+    
+    def related_events(self):
+        return self.rels.related_events()[:3]
 
     def related_documents(self):
         return self.rels.related_documents()[:3]
