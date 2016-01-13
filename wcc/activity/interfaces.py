@@ -13,3 +13,7 @@ class IActivityRelation(Interface):
 
     def related_documents():
         pass
+    
+    def related_events():
+        pass
+    
