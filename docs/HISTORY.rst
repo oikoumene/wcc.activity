@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.18.dev1 (unreleased)
+-----------------
+
+- modified related events view
+
+
 1.18 (unreleased)
 -----------------
 
