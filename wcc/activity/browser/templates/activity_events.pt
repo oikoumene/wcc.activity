@@ -34,7 +34,7 @@
     </metal:description>
 
   <metal:content-core define-macro="content-core">
-      <div id="wcc-activity-relatedevents" tal:define="batch view/batch">
+      <div id="wcc-activity-relatedevents" tal:define="batch view/batch" tal:condition="batch">
             <h2>Related Events</h2>
             <div tal:repeat="item batch" class="row wcc-activity-relatedevents-item">
                 <div class="cell width-1:5 position-0 image-cell" 
