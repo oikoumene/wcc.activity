@@ -41,11 +41,67 @@
                     tal:define="featureimages nocall:item/@@featureimages">
                     <img tal:replace="structure python:featureimages.tag(scale='thumb')"/>
                 </div>
+                
+                
                 <div class="cell width-4:5 position-1:5">
                     <h4>
                         <a tal:attributes="href item/absolute_url"
                             tal:content="item/title"></a>
                     </h4>
+                    <tal:block tal:define="item_type item/portal_type;
+                                           item_start item/start|item/StartDate|nothing;
+                                           item_end item/end|item/EndDate|nothing;
+                                           item_samedate python: (item_end - item_start &lt; 1) if item_type == 'Event' else False;
+                                           item_samemonth python: item_start.month() == item_end.month();
+                                           item_sameyear python: item_start.year() == item_end.year()" tal:condition="python: item_type == 'Event'">
+                      <div class="date-location-size">
+                        <span tal:condition="item_samedate"
+                              i18n:translate="label_event_byline_onlyfrom">
+                             <abbr class="dtstart"
+                                   tal:content="python:context.toLocalizedTime(item_start)"
+                                   i18n:name="start">date</abbr>
+                        </span>
+                        <span tal:condition="python: item_samemonth and not item_samedate and item_sameyear"
+                              i18n:translate="label_event_byline_onlyfrom">
+                             <abbr class="dtstart"
+                                   tal:content="python: context.toLocalizedTime(item_start).split()[0]"
+                                   i18n:name="start">date</abbr>
+                            -
+                            <abbr class="dtend"
+                                   tal:content="python: context.toLocalizedTime(item_end)"
+                                   i18n:name="end">date</abbr>
+
+                        </span>
+                        <span tal:condition="python: not item_samemonth and not item_samedate and item_sameyear"
+                              i18n:translate="label_event_byline_onlyfrom">
+                             <abbr class="dtstart"
+                                   tal:content="python: ' '.join(context.toLocalizedTime(item_start).split()[0:-1])"
+                                   i18n:name="start">date</abbr>
+                            -
+                            <abbr class="dtend"
+                                   tal:content="python: context.toLocalizedTime(item_end)"
+                                   i18n:name="end">date</abbr>
+
+                        </span>
+                        <span tal:condition="python: not item_sameyear"
+                              i18n:translate="label_event_byline_onlyfrom">
+                             <abbr class="dtstart"
+                                   tal:content="python: context.toLocalizedTime(item_start)"
+                                   i18n:name="start">date</abbr>
+                            -
+                            <abbr class="dtend"
+                                   tal:content="python: context.toLocalizedTime(item_end)"
+                                   i18n:name="end">date</abbr>
+
+                        </span>
+                        <span tal:condition="item/location"
+                              i18n:translate="label_event_byline_location">
+
+                             <span class="eventlisting-location" tal:content="string:${item/location}"
+                                   i18n:name="location">Oslo</span>
+                        </span>
+                      </div>
+                    </tal:block>
                     <p tal:content="item/Description"></p>
                 </div>
             </div>
