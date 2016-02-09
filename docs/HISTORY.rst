@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.18.dev2
+-----------------
+-added event dates and location, sort events and filter display
+
 1.18.dev1 (unreleased)
 -----------------
 

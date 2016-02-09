@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.18.dev1'
+version = '1.18.dev2'
 
 setup(name='wcc.activity',
       version=version,
