@@ -92,18 +92,19 @@ def _at_back_references(source_object, relationship, translation=None):
     gsm = getSecurityManager()
     result = []
     for obj in refs:
-        if ITranslatable.providedBy(obj):
-            trans_manager = ITranslationManager(aq_inner(obj))
-            try: 
-                trans_obj = trans_manager.get_translation(lang)
-            except Unauthorized:
-                continue
+        if obj is not None:
+            if ITranslatable.providedBy(obj):
+                trans_manager = ITranslationManager(aq_inner(obj))
+                try: 
+                    trans_obj = trans_manager.get_translation(lang)
+                except Unauthorized:
+                    continue
 
-            if trans_obj:
-                result.append(trans_obj)
-                continue
+                if trans_obj:
+                    result.append(trans_obj)
+                    continue
 
-        if gsm.checkPermission('zope2.View', obj):
-            result.append(obj)
+            if gsm.checkPermission('zope2.View', obj):
+                result.append(obj)
 
     return result
